@@ -8,11 +8,12 @@ import { fetchSharedFilesRanking, saveSharedFile, pvSharedFile } from '../servic
 
 const StyledCard = styled(Card)`
   .ant-table-thead > tr > th {
-    background: #f7f7f7;
+    background: var(--bg-primary) !important;
+    color: var(--text-primary) !important;
   }
   .download-count {
     font-weight: bold;
-    color: #1890ff;
+    color: var(--accent-color);
   }
 `;
 

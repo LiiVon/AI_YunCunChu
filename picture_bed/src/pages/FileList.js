@@ -30,11 +30,11 @@ const UploadCard = styled(Card)`
 const getFileIcon = (type) => {
   if (!type) return <FileOutlined />;
   const t = type.toLowerCase();
-  if (t === 'pdf') return <FilePdfOutlined style={{ color: '#e53935' }} />;
-  if (['doc', 'docx'].includes(t)) return <FileWordOutlined style={{ color: '#1976d2' }} />;
-  if (['xls', 'xlsx'].includes(t)) return <FileExcelOutlined style={{ color: '#2e7d32' }} />;
-  if (['zip', 'rar', '7z', 'tar', 'gz'].includes(t)) return <FileZipOutlined style={{ color: '#f57c00' }} />;
-  if (['txt', 'md', 'log'].includes(t)) return <FileTextOutlined style={{ color: '#546e7a' }} />;
+  if (t === 'pdf') return <FilePdfOutlined style={{ color: 'var(--file-icon-pdf)' }} />;
+  if (['doc', 'docx'].includes(t)) return <FileWordOutlined style={{ color: 'var(--file-icon-word)' }} />;
+  if (['xls', 'xlsx'].includes(t)) return <FileExcelOutlined style={{ color: 'var(--file-icon-excel)' }} />;
+  if (['zip', 'rar', '7z', 'tar', 'gz'].includes(t)) return <FileZipOutlined style={{ color: 'var(--file-icon-zip)' }} />;
+  if (['txt', 'md', 'log'].includes(t)) return <FileTextOutlined style={{ color: 'var(--file-icon-text)' }} />;
   return <FileOutlined />;
 };
 

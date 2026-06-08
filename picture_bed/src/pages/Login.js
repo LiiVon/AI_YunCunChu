@@ -17,42 +17,40 @@ const LoginWrapper = styled.div`
 const LoginCard = styled(Card)`
   width: 100%;
   max-width: 400px;
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  border-radius: 16px;
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow);
+  border-radius: var(--border-radius, 16px);
 
   .ant-card-head-title {
     text-align: center;
-    color: #1a5d1a;
+    color: var(--text-primary);
     font-size: 24px;
+    font-weight: 600;
   }
 
-  .ant-form-item-control-input-content {
-    input {
-      background: rgba(255, 255, 255, 0.9);
-    }
+  .ant-form-item-control-input-content input {
+    background: rgba(255, 255, 255, 0.08);
   }
 
   .ant-btn-primary {
-    background: #4CAF50;
-    border-color: #45a049;
+    background: var(--accent-color);
+    border-color: var(--accent-color);
     
     &:hover {
-      background: #45a049;
-      border-color: #3d8b40;
+      opacity: 0.9;
     }
   }
 
   .register-link {
     text-align: center;
     margin-top: 16px;
-    color: #1a5d1a;
+    color: var(--text-secondary);
     cursor: pointer;
     
     &:hover {
-      color: #2e7d32;
+      color: var(--accent-color);
     }
   }
 `;

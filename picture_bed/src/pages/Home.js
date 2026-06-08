@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import { fetchUserImages, shareFile, cancelShareFile, deleteImage, pvFile } from '../services/images';
 import { aiSearch, fetchApiKey, saveApiKey, describeFileByMd5, rebuildIndex } from '../services/ai';
 
+// 卡片容器，无额外颜色，使用 antd 默认/主题色
 const StyledCard = styled(Card)`
   margin-bottom: 24px;
   .ant-card-head {
@@ -21,13 +22,14 @@ const StyledCard = styled(Card)`
   }
 `;
 
+// 搜索结果卡片，适配主题变量
 const SearchResultCard = styled(Card)`
   margin-bottom: 16px;
   .search-item {
     display: flex;
     align-items: center;
     padding: 12px 0;
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid var(--border-color);
     &:last-child { border-bottom: none; }
   }
   .search-item-thumb {
@@ -36,7 +38,7 @@ const SearchResultCard = styled(Card)`
     margin-right: 16px;
     border-radius: 4px;
     object-fit: cover;
-    background: #f5f5f5;
+    background: var(--bg-primary);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -49,7 +51,7 @@ const SearchResultCard = styled(Card)`
     margin-bottom: 4px;
   }
   .search-item-desc {
-    color: #888;
+    color: var(--text-secondary);
     font-size: 12px;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -74,7 +76,7 @@ const Home = () => {
   const [searching, setSearching] = useState(false);
   const [apiKeyInput, setApiKeyInput] = useState('');
   const [apiKeySaved, setApiKeySaved] = useState(false);
-  const [apiKeyLoaded, setApiKeyLoaded] = useState('');  // 记录从浏览器本地加载的 key
+  const [apiKeyLoaded, setApiKeyLoaded] = useState('');
   const [rebuilding, setRebuilding] = useState(false);
   const { user, logout } = useAuth();
   const navigate = useNavigate();
@@ -82,7 +84,6 @@ const Home = () => {
   useEffect(() => {
     if (user && user.token) {
       fetchDashboardData();
-      // 从浏览器本地加载 API Key
       fetchApiKey(user).then(key => {
         if (key) {
           setApiKeyInput(key);
@@ -109,7 +110,6 @@ const Home = () => {
   const fetchDashboardData = async () => {
     try {
       const files = await fetchUserImages(user);
-
       const totalDownloads = files.reduce((sum, f) => sum + (f.pv || 0), 0);
       const totalShares = files.filter(f => f.share_status === 1).length;
       const totalSize = files.reduce((sum, f) => sum + (f.size || 0), 0);
@@ -287,8 +287,9 @@ const Home = () => {
 
   return (
     <div>
+      {/* AI 智能搜索卡片 */}
       <StyledCard title="AI 智能搜索" style={{ marginBottom: 24 }}>
-        <div style={{ marginBottom: 16 }}>
+        <div style={{ marginBottom: 12 }}>
           <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
             <Input.Password
               placeholder="请输入阿里百炼 API Key（sk-...）"
@@ -304,7 +305,7 @@ const Home = () => {
               <Button onClick={handleClearApiKey}>清除</Button>
             )}
           </div>
-          <div style={{ color: '#888', fontSize: 12, marginTop: 4 }}>
+          <div style={{ color: 'var(--text-secondary)', fontSize: 12, marginTop: 4 }}>
             API Key 仅保存在浏览器本地，不会上传到服务器存储。用于调用阿里百炼 AI 服务生成文件描述和语义搜索。
           </div>
         </div>
@@ -339,17 +340,17 @@ const Home = () => {
               <List
                 dataSource={searchResults}
                 renderItem={item => (
-                  <div className="search-item" key={item.md5} style={{ display: 'flex', alignItems: 'center', padding: '12px 0', borderBottom: '1px solid #f0f0f0' }}>
-                    <div style={{ width: 60, height: 60, marginRight: 16, borderRadius: 4, overflow: 'hidden', background: '#f5f5f5', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <div className="search-item" key={item.md5} style={{ display: 'flex', alignItems: 'center', padding: '12px 0', borderBottom: '1px solid var(--border-color)' }}>
+                    <div style={{ width: 60, height: 60, marginRight: 16, borderRadius: 4, overflow: 'hidden', background: 'var(--bg-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       {isImageType(item.type) && item.url ? (
                         <img src={item.url} alt={item.filename} style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'cover' }} />
                       ) : (
-                        <FileOutlined style={{ fontSize: 24, color: '#999' }} />
+                        <FileOutlined style={{ fontSize: 24, color: 'var(--text-secondary)' }} />
                       )}
                     </div>
                     <div style={{ flex: 1 }}>
-                      <div style={{ fontWeight: 500 }}>{item.filename}</div>
-                      <div style={{ color: '#888', fontSize: 12, marginTop: 4 }}>{item.description}</div>
+                      <div style={{ fontWeight: 500, color: 'var(--text-primary)' }}>{item.filename}</div>
+                      <div style={{ color: 'var(--text-secondary)', fontSize: 12, marginTop: 4 }}>{item.description}</div>
                     </div>
                     <Tag color={item.score >= 0.6 ? 'green' : item.score >= 0.4 ? 'blue' : 'orange'} style={{ marginLeft: 12 }}>
                       相似度 {(Math.max(0, item.score) * 100).toFixed(1)}%
@@ -367,6 +368,7 @@ const Home = () => {
         )}
       </StyledCard>
 
+      {/* 统计数据 */}
       <Row gutter={24}>
         <Col xs={24} sm={12} md={6}>
           <StyledCard>
@@ -406,6 +408,7 @@ const Home = () => {
         </Col>
       </Row>
 
+      {/* 最近上传列表 */}
       <StyledCard title="最近上传">
         <List
           itemLayout="horizontal"
@@ -415,7 +418,7 @@ const Home = () => {
             <List.Item
               actions={[
                 item.share_status === 1 ? (
-                  <Button type="link" icon={<ShareAltOutlined />} onClick={() => handleCancelShare(item)} style={{ color: '#52c41a' }}>
+                  <Button type="link" icon={<ShareAltOutlined />} onClick={() => handleCancelShare(item)} style={{ color: 'var(--accent-color)' }}>
                     已分享
                   </Button>
                 ) : (
