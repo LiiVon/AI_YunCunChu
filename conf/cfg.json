@@ -11,7 +11,7 @@
 		"port": "3306",
 		"database": "yuncuchu",
 		"user": "root",
-		"password": "123456"
+		"password": "0330"
 	},
 	
 	"dfs_path":
@@ -33,7 +33,7 @@
 
 	"public_server":
 	{
-		"ip": "xxx.xx.xx.xx",
+		"ip": " 192.168.31.134",
 		"port": "8080"
 	},
 
